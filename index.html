@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>homepage</title>
+        <meta charset="UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <script>
+        $(document).ready(function() {
+            var timer = 0;
+            $("#startBtn").click(function(){
+                $("#startbtn").attr("disabled", "true");
+                $("body").css("background-color","grey");
+                $("#messagediv").css("display","block");
+                $("#xbutton").css("display","block");
+                
+               $.ajax({
+                  url: "script.php",
+                  type: "POST",
+                  success: function(data){
+                     var content = JSON.parse(data);
+                     afis(content,0);
+                  }
+                });
+                
+                document.getElementById("startBtn").disabled = false;
+            });
+            function afis(data,index){
+                if(index < data.length){
+                    var bar = document.getElementById("progressbar");
+                    bar.setAttribute("aria-valuemax", data[index]["mesaj_secunde"]);
+                    if(index%2==0){
+                        afisPlainJS(data[index]["mesaj_text"]);
+                    }
+                    else{
+                        afisJQuery(data[index]["mesaj_text"]);
+                    }
+                    var timp = data[index]["mesaj_secunde"];
+                    Timer(data,index,timp);
+                } 
+            }
+            
+            function Timer(data,index,timp){
+                if(timp>0 ){
+                    var percentfinal = 100/data[index]["mesaj_secunde"];
+                    var bar = document.getElementById("progressbar");
+                    bar.style.width = percentfinal*(data[index]["mesaj_secunde"]-timp+1)+"%";
+                    var pprogbar = document.getElementById("pprogressbar");
+                    pprogbar.innerHTML =  timp;
+                    timer=setTimeout(function(){Timer(data,index,timp-1);},1000); 
+                }
+                else{
+                    afis(data,index+1);
+                }
+            }
+            
+            $("#xbutton").click(function(){
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = 0;
+                } 
+            });
+            
+            function afisPlainJS(data){
+				var p = document.getElementById("txt");
+				p.parentNode.removeChild(p);
+				var p2 = document.createElement('p');
+                //var div = document.getElementById("messagediv")
+                //var p = document.createElement('P');
+                //p.innerHTML = data;
+                //div.appendChild(p);
+                p2.setAttribute("id", "txt");
+                p2.style.fontSize= 24+"px";
+                p2.style.height= 12+"%";
+                p2.style.position='absolute';
+                p2.style.left = 0;
+                p2.style.right = 0;
+                p2.style.top = 0;
+                p2.style.bottom = 0;
+                p2.style.margin = 'auto';
+                p2.style.maxWidth = 100+"%";
+                p2.style.maxHeight = 100+"%";
+                p2.style.overflow = 'auto';
+				p2.innerHTML = data;
+				document.getElementById("messagediv").appendChild(p2);
+            }
+            
+            function afisJQuery(data){
+				var p = document.getElementById("txt");
+				p.parentNode.removeChild(p);
+				var p2 = document.createElement('p');
+                //var div = document.getElementById("messagediv")
+                //var p = document.createElement('P');
+                //p.innerHTML = data;
+                //div.appendChild(p);
+                p2.setAttribute("id", "txt");
+                p2.style.fontSize= 24+"px";
+                p2.style.height= 12+"%";
+                p2.style.position='absolute';
+                p2.style.left = 0;
+                p2.style.right = 0;
+                p2.style.top = 0;
+                p2.style.bottom = 0;
+                p2.style.margin = 'auto';
+                p2.style.maxWidth = 100+"%";
+                p2.style.maxHeight = 100+"%";
+                p2.style.overflow = 'auto';
+				p2.innerHTML = data;
+				document.getElementById("messagediv").appendChild(p2);
+            }
+            
+        });
+    </script>
+    <body>
+        <div class="maindiv">
+            <p style="font-size: 25px">Meniu Aplicatie</p>
+            <div id="optbtndiv">
+            <form action="editare/OptionsIndex.html">
+                <input type="submit" id="optbtn" value="Optiuni Mesaje" />
+            </form>
+            </div>
+            <button id="startBtn" type="button" >Start</button>
+            <div id="messagediv">
+                <div class="progress">
+                    <div class="progress-bar" id ="progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                      <p id="pprogressbar"></p>
+                    </div>
+                </div>
+                <p id="txt"></p>
+                <button type="button" id="xbutton" onclick="StopTimer()">X</button>
+            </div>
+        </div>
+    </body>
+</html>

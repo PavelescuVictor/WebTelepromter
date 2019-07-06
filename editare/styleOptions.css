@@ -1,0 +1,39 @@
+
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+html {
+    overflow-y: scroll;    
+}
+
+.divp{
+    padding: 10px;
+    border: 10px solid;
+    border-color: rgb(43, 57, 81);
+    border-radius: 25px;
+    background-color: rgb(226, 237, 255);
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+}
+
+input{
+    box-sizing:border-box;
+}
+
+.inputbtn{
+    width:200px;
+    margin-top: 10px;
+}
+
+p{
+    margin-bottom: 5px;
+    margin-top: 5px;
+}

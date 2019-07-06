@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>homepage</title>
+        <meta charset="UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleOptions.css">
+    </head>
+	<body>
+         <script>
+            var adaugare_inputs = false;
+            
+            function adauga() {
+                var container = document.getElementById("adaugare");
+                document.getElementById("modificare").innerHTML = "";
+                document.getElementById("stergere").innerHTML = "";
+                if (adaugare_inputs == false || document.getElementById("adaugare").innerHTML == ""){
+                    var text = document.createElement("INPUT");
+                    var nrord = document.createElement("INPUT");
+                    var time = document.createElement("INPUT");
+                    
+                    var partext = document.createElement("P");
+                    var parnrord = document.createElement("P");
+                    var partime = document.createElement("P");
+                    
+                    var msgtext = document.createTextNode("Mesaj: ");
+                    var msgnrord = document.createTextNode("Numar Ordine: ");
+                    var msgtime = document.createTextNode("Timp: ");
+                    
+                    partext.appendChild(msgtext);
+                    parnrord.appendChild(msgnrord);
+                    partime.appendChild(msgtime);
+                    
+                    text.setAttribute("type", "text");
+                    text.setAttribute("id", "msg1");
+                    nrord.setAttribute("type", "number");
+                    nrord.setAttribute("id", "nr1")
+                    time.setAttribute("type", "number");
+                    time.setAttribute("id", "time1")
+                    
+                    container.appendChild(partext);
+                    container.appendChild(text);
+                    container.appendChild(parnrord);
+                    container.appendChild(nrord);
+                    container.appendChild(partime);
+                    container.appendChild(time);
+                
+                    adaugare_inputs = true;
+                }
+            }
+             
+            var modificare_inputs = false;
+             
+            function modificare() {
+                var container = document.getElementById("modificare");
+                document.getElementById("adaugare").innerHTML = "";
+                document.getElementById("stergere").innerHTML = "";
+                if (modificare_inputs == false || document.getElementById("modificare").innerHTML == ""){
+                    var text = document.createElement("INPUT");
+                    var nrord = document.createElement("INPUT");
+                    var time = document.createElement("INPUT");
+                    
+                    var partext = document.createElement("P");
+                    var parnrord = document.createElement("P");
+                    var partime = document.createElement("P");
+                    
+                    var msgtext = document.createTextNode("Mesaj: ");
+                    var msgnrord = document.createTextNode("Numar Ordine: ");
+                    var msgtime = document.createTextNode("Timp: ");
+                    
+                    partext.appendChild(msgtext);
+                    parnrord.appendChild(msgnrord);
+                    partime.appendChild(msgtime);
+                    
+                    text.setAttribute("type", "text");
+                    text.setAttribute("id", "msg2");
+                    nrord.setAttribute("type", "number");
+                    nrord.setAttribute("id", "nr2");
+                    time.setAttribute("type", "number");
+                    time.setAttribute("id", "time2");
+                    
+                    container.appendChild(partext);
+                    container.appendChild(text);
+                    container.appendChild(parnrord);
+                    container.appendChild(nrord);
+                    container.appendChild(partime);
+                    container.appendChild(time);
+                
+                    modificare_inputs = true;
+                }
+            }
+             
+            var stergere_inputs = false;
+             
+            function stergere() {
+                var container = document.getElementById("stergere");
+                document.getElementById("adaugare").innerHTML = "";
+                document.getElementById("modificare").innerHTML = "";
+                if (stergere_inputs == false || document.getElementById("stergere").innerHTML == ""){
+                    var nrord = document.createElement("INPUT");
+                    
+                    var parnrord = document.createElement("P");
+                    
+                    var msgnrord = document.createTextNode("Numar Ordine: ");
+                    
+                    parnrord.appendChild(msgnrord);
+                    
+                    nrord.setAttribute("type", "number");
+                    nrord.setAttribute("id", "nr3");
+                    
+                    container.appendChild(parnrord);
+                    container.appendChild(nrord);
+                
+                    stergere_inputs = true;
+                }
+            }
+             
+            function posting(){
+                var mesaj = null;
+                var numarordine = null;
+                var timp = null;
+                var tip = null;
+                if(document.getElementById("adaugare").innerHTML != ""){
+                    mesaj = document.getElementById("msg1").value;
+                    numarordine = document.getElementById("nr1").value;
+                    timp = document.getElementById("time1").value;
+                    tip = 'adaugare';
+                }
+                else if(document.getElementById("modificare").innerHTML != ""){
+                    mesaj = document.getElementById("msg2").value;
+                    numarordine = document.getElementById("nr2").value;
+                    timp = document.getElementById("time2").value;
+                    tip = 'modificare';
+                }
+                else{
+                    numarordine = document.getElementById("nr3").value;
+                    tip = 'stergere'
+                }
+                $.ajax({
+                    url: "OptionsIndex.php",
+                    type: "POST",
+                    data: {
+                        'Mesaj': mesaj,
+                        'NumarOrdine': numarordine,
+                        'Timp': timp,
+                        'Tip': tip
+                    },
+                    success: function(data){
+                    }
+                });
+            }
+        </script>
+        
+        <div class="divp">
+                <p style="font-size: 25px">Meniu Optiuni</p>
+                <input type="button" class="inputbtn" value="Adauga mesaje" onclick="adauga()">
+                <div id="adaugare">    
+                </div>
+                <input type="button" class="inputbtn" value="Modifica mesaje" onclick="modificare()"/>
+                <div id="modificare">    
+                </div>
+                <input type="button" class="inputbtn" value="Sterge mesaje" onclick="stergere()"/>
+                <div id="stergere">    
+                </div>
+                <input type="button" class="inputbtn" id="submitButton"  name="submitButton" value="Submit" onclick="posting()">
+        </div>
+	</body>
+</html>
